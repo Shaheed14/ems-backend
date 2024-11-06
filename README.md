@@ -19,22 +19,18 @@ Getting Started
 
 Clone the Repository:
 
-Bash
-git clone https://github.com/your-username/employee-management-system.git
-Use code with caution.
+https://github.com/Shaheed14/ems-backend.git
 
 Build the Project:
 
 Using Maven:
 
-Bash
 cd employee-management-system
 mvn clean install
-Use code with caution.
+
 
 Using Gradle:
 
-Bash
 cd employee-management-system
 ./gradlew build
 Use code with caution.
@@ -43,15 +39,12 @@ Run the Application:
 
 Using Maven:
 
-Bash
 mvn spring-boot:run
-Use code with caution.
 
 Using Gradle:
 
-Bash
 ./gradlew bootRun
-Use code with caution.
+
 
 Features
 
