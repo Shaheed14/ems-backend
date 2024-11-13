@@ -3,12 +3,15 @@ package com.internal.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.internal.dto.EmployeeDto;
+import com.internal.entity.Department;
 import com.internal.entity.Employee;
 import com.internal.exception.ResourceNotFoundException;
 import com.internal.mapper.EmployeeMapper;
+import com.internal.repository.DepartmentRepository;
 import com.internal.repository.EmployeeRepository;
 
 
@@ -18,7 +21,11 @@ import com.internal.repository.EmployeeRepository;
 public class EmployeeServiceImpl implements EmployeeService{
 	
 	private EmployeeRepository employeeRepository;
-	
+
+	@Autowired
+	private DepartmentRepository departmentRepository;
+
+
 
 	public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
 		super();
@@ -30,6 +37,10 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public EmployeeDto createEmployee(EmployeeDto employeeDto) {
 		
 		Employee employee=EmployeeMapper.mapToEmployee(employeeDto);
+		Department department=departmentRepository.findById(employeeDto.getDepartmentId())
+								.orElseThrow(()-> 
+								new ResourceNotFoundException("Department is not exists with ID: "+ employeeDto.getDepartmentId()));
+		employee.setDepartment(department);
 		Employee savedEmployee=employeeRepository.save(employee);
 		
 		return EmployeeMapper.mapToEmployeeDto(savedEmployee);
@@ -61,6 +72,11 @@ public class EmployeeServiceImpl implements EmployeeService{
 		employee.setFirstName(updatedEmployee.getFirstName());
 		employee.setLastName(updatedEmployee.getLastName());
 		employee.setEmail(updatedEmployee.getEmail());
+
+		Department department=departmentRepository.findById(updatedEmployee.getDepartmentId())
+								.orElseThrow(()-> 
+								new ResourceNotFoundException("Department is not exists with ID: "+updatedEmployee.getDepartmentId()));
+		employee.setDepartment(department);
 		
 		Employee updateEmployee = employeeRepository.save(employee);
 		return EmployeeMapper.mapToEmployeeDto(updateEmployee);
